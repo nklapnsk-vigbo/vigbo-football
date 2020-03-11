@@ -13,9 +13,9 @@ export default function HTML(props) {
         />
         {props.headComponents}
         <link
-          href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700&display=swap&subset=cyrillic,cyrillic-ext"
+          href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700,800&display=swap"
           rel="stylesheet"
-        ></link>
+        />
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}

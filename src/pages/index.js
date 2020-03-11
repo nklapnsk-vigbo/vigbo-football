@@ -50,6 +50,10 @@ function IndexPage(props) {
     }
   }
 
+  function handleResetClick() {
+    setTeams(false)
+  }
+
   return (
     <>
       <Helmet title="Vigbo Football Manager"></Helmet>
@@ -70,30 +74,35 @@ function IndexPage(props) {
                 </label>
               ))}
             </div>
-            <button onClick={shuffleTeams} className="shuffle">
+            <button onClick={shuffleTeams} className="button">
               РАЗБИТЬ НА КОМАНДЫ
             </button>
           </>
         )}
 
-        {teams &&
-          !isFakeLoading &&
-          teams.map((item, idx) => (
-            <div key={idx} className="teams">
-              <div className="player">
-                <h1 className="status">ВОРОТЧИК</h1>
-                <img src={item[0].photo.url} alt="" className="photo"></img>
-                <h1 className="name">{item[0].name}</h1>
-                <h2 className="nickname">{item[0].nickname}</h2>
+        {teams && !isFakeLoading && (
+          <>
+            {teams.map((item, idx) => (
+              <div key={idx} className="teams">
+                <div className="player">
+                  <h1 className="status">ВОРОТЧИК</h1>
+                  <img src={item[0].photo.url} alt="" className="photo"></img>
+                  <h1 className="name">{item[0].name}</h1>
+                  <h2 className="nickname">{item[0].nickname}</h2>
+                </div>
+                <div className="player">
+                  <h1 className="status">НАПАДАЛЬЩИК</h1>
+                  <img src={item[1].photo.url} alt="" className="photo"></img>
+                  <h1 className="name">{item[1].name}</h1>
+                  <h2 className="nickname">{item[1].nickname}</h2>
+                </div>
               </div>
-              <div className="player">
-                <h1 className="status">НАПАДАЛЬЩИК</h1>
-                <img src={item[1].photo.url} alt="" className="photo"></img>
-                <h1 className="name">{item[1].name}</h1>
-                <h2 className="nickname">{item[1].nickname}</h2>
-              </div>
-            </div>
-          ))}
+            ))}
+            <button onClick={handleResetClick} className="button">
+              РЕЗЕТ
+            </button>
+          </>
+        )}
 
         {isFakeLoading && (
           <img
