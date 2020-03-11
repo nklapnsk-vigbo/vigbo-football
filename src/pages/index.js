@@ -51,6 +51,7 @@ function IndexPage(props) {
   }
 
   function handleResetClick() {
+    setActivePlayers([])
     setTeams(false)
   }
 
