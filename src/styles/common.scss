@@ -1,0 +1,82 @@
+@import "reset";
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  background-color: #f1f1f1;
+}
+
+.container {
+  max-width: 768px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.player {
+  display: block;
+  width: 45%;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.photo {
+  display: block;
+  height: 40vmin;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.checkbox {
+  transform: scale(1.2);
+}
+
+.teams {
+  display: flex;
+  justify-content: space-between;
+
+  &:nth-child(odd) {
+    background-color: #eee;
+  }
+
+  &:nth-child(odd) {
+    background-color: #ecb0ff;
+  }
+}
+
+.name {
+  font-size: 5vmin;
+}
+
+.nickname {
+  font-size: 3vmin;
+  color: rgb(90, 90, 90);
+}
+
+.shuffle {
+  width: 100%;
+  font-size: 5vmin;
+  border: 0;
+  background-color: tomato;
+  padding: 2vmin;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 1.5vmin;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.status {
+  color: royalblue;
+  font-size: 4vmin;
+}
