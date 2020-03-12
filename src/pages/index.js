@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 import { chunk } from "lodash"
 import { Helmet } from "react-helmet"
@@ -8,11 +8,10 @@ import "../styles/common.scss"
 function IndexPage(props) {
   const players = props.data.players.nodes
   const [activePlayers, setActivePlayers] = useState([])
-  const [isFakeLoading, setIsFakeLoading] = useState(false)
   const [teams, setTeams] = useState()
 
-  function handlePlayerSelect(e, id) {
-    if (e.target.checked) {
+  function handlePlayerSelect(id, isActive) {
+    if (isActive) {
       setActivePlayers([...activePlayers, players.find(item => item.id === id)])
     } else {
       setActivePlayers([...activePlayers.filter(item => item.id !== id)])
@@ -22,6 +21,8 @@ function IndexPage(props) {
   function shuffleTeams() {
     if (activePlayers.length % 2 !== 0) {
       alert("Нечетное количество игроков")
+    } else if (activePlayers.length > 4) {
+      alert("Нужно выбрать 4 игрока")
     } else {
       function shuffle(array) {
         let counter = array.length
@@ -45,8 +46,6 @@ function IndexPage(props) {
 
       const shuffledPlayers = shuffle(activePlayers)
       setTeams(chunk(shuffledPlayers, 2))
-      setIsFakeLoading(true)
-      setTimeout(() => setIsFakeLoading(false), 2000)
     }
   }
 
@@ -57,66 +56,117 @@ function IndexPage(props) {
 
   return (
     <>
-      <Helmet title="Vigbo Football Manager"></Helmet>
+      <Helmet title="Sqvirbo Football Manager"></Helmet>
+      {!teams && (
+        <header className="header">
+          <div className="container">
+            <h1 className="title">
+              CHOOSE YOUT FIGHTERS... ({activePlayers.length}/4)
+            </h1>
+          </div>
+        </header>
+      )}
+      {teams && (
+        <header className="header">
+          <div className="container">
+            <h1 className="title">РЕЗУЛЬТАТ</h1>
+          </div>
+        </header>
+      )}
       <div className="container">
         {!teams && (
           <>
             <div className="players">
               {players.map(item => (
-                <label key={item.id} className="player">
-                  <img src={item.photo.url} alt="" className="photo"></img>
-                  <h1 className="name">{item.name}</h1>
-                  <h2 className="nickname">{item.nickname}</h2>
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    onChange={e => handlePlayerSelect(e, item.id)}
-                  ></input>
-                </label>
+                <Player
+                  key={item.id}
+                  {...item}
+                  handlePlayerSelect={handlePlayerSelect}
+                ></Player>
               ))}
             </div>
-            <button onClick={shuffleTeams} className="button">
-              РАЗБИТЬ НА КОМАНДЫ
-            </button>
           </>
-        )}
-
-        {teams && !isFakeLoading && (
-          <>
-            {teams.map((item, idx) => (
-              <div key={idx} className="teams">
-                <div className="player">
-                  <h1 className="status">ВОРОТЧИК</h1>
-                  <img src={item[0].photo.url} alt="" className="photo"></img>
-                  <h1 className="name">{item[0].name}</h1>
-                  <h2 className="nickname">{item[0].nickname}</h2>
-                </div>
-                <div className="player">
-                  <h1 className="status">НАПАДАЛЬЩИК</h1>
-                  <img src={item[1].photo.url} alt="" className="photo"></img>
-                  <h1 className="name">{item[1].name}</h1>
-                  <h2 className="nickname">{item[1].nickname}</h2>
-                </div>
-              </div>
-            ))}
-            <button onClick={handleResetClick} className="button">
-              РЕЗЕТ
-            </button>
-          </>
-        )}
-
-        {isFakeLoading && (
-          <img
-            src="https://i2.wp.com/static.onemansblog.com/wp-content/uploads/2016/05/Boobs-Loading.gif"
-            alt=""
-          />
         )}
       </div>
+      {teams && (
+        <div className="teams">
+          <div className="container">
+            <div className="first-team">
+              <div className="team-player">
+                <h2 className="team-title">КОМАНДА 1</h2>
+                <div className="photo">
+                  <img src={teams[0][0].photo.url} alt=""></img>
+                </div>
+                <h1 className="status">Воротчик</h1>
+              </div>
+              <div className="team-player">
+                <div className="photo">
+                  <img src={teams[0][1].photo.url} alt=""></img>
+                </div>
+                <h1 className="status">Нападальщик</h1>
+              </div>
+            </div>
+            <div className="second-team">
+              <div className="team-player">
+                <h2 className="team-title">КОМАНДА 2</h2>
+                <div className="photo">
+                  <img src={teams[1][0].photo.url} alt=""></img>
+                </div>
+                <h1 className="status">Воротчик</h1>
+              </div>
+              <div className="team-player">
+                <div className="photo">
+                  <img src={teams[1][1].photo.url} alt=""></img>
+                </div>
+                <h1 className="status">Нападальщик</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {!teams && (
+        <aside className="selector">
+          <button onClick={shuffleTeams} className="button">
+            РАЗБИТЬ НА КОМАНДЫ
+          </button>
+        </aside>
+      )}
+      {teams && (
+        <aside className="selector">
+          <button onClick={handleResetClick} className="button">
+            РЕЗЕТ
+          </button>
+        </aside>
+      )}
     </>
   )
 }
 
 export default IndexPage
+
+function Player({ id, photo, name, nickname, handlePlayerSelect }) {
+  const [isActive, setIsActive] = useState(false)
+  function handleClick() {
+    setIsActive(!isActive)
+  }
+
+  useEffect(() => handlePlayerSelect(id, isActive), [isActive])
+
+  return (
+    <div
+      className={`player ${isActive ? "player-active" : ""}`}
+      onClick={handleClick}
+    >
+      <div className="photo">
+        <img src={photo.url} alt=""></img>
+      </div>
+      <div>
+        <h2 className="name">{name}</h2>
+        <h3 className="nickname">{nickname}</h3>
+      </div>
+    </div>
+  )
+}
 
 export const query = graphql`
   query {

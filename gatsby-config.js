@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `Vigbo Football Manager`,
-    description: `Vigbo Football Manager`,
+    title: `Sqvirbo Football Manager`,
+    description: `Sqvirbo Football Manager`,
     author: `@vigbo`,
   },
   plugins: [
@@ -20,13 +20,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `sqvirbo-football-manager`,
+        short_name: `Sqvirbo Football Manager`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#5327d2`,
+        theme_color: `#5327d2`,
         display: `minimal-ui`,
-        icon: `src/images/soccer.png`, // This path is relative to the root of the site.
+        icon: `src/images/favicon.jpg`,
       },
     },
     {
